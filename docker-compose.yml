@@ -1,9 +1,10 @@
+
 services:
-  # ---------------------------------------------------------------------------
-  # Application
-  # ---------------------------------------------------------------------------
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ohmind_app:latest
     container_name: ohmind_app
     ports:
       - "8000:8000"
@@ -11,6 +12,7 @@ services:
       - .env
     volumes:
       - .:/app
+      - app_venv:/app/.venv
     command: >
       uvicorn app.main:app
       --host 0.0.0.0
@@ -25,9 +27,6 @@ services:
     networks:
       - ohmind_net
 
-  # ---------------------------------------------------------------------------
-  # PostgreSQL
-  # ---------------------------------------------------------------------------
   postgres:
     image: postgres:16-alpine
     container_name: ohmind_postgres
@@ -49,9 +48,6 @@ services:
     networks:
       - ohmind_net
 
-  # ---------------------------------------------------------------------------
-  # Redis
-  # ---------------------------------------------------------------------------
   redis:
     image: redis:7-alpine
     container_name: ohmind_redis
@@ -69,12 +65,11 @@ services:
     networks:
       - ohmind_net
 
-# ─── Volumes ────────────────────────────────────────────────────────────────
 volumes:
   postgres_data:
   redis_data:
+  app_venv:
 
-# ─── Networks ───────────────────────────────────────────────────────────────
 networks:
   ohmind_net:
     driver: bridge
