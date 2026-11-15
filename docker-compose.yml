@@ -1,24 +1,17 @@
+
 services:
-  # ---------------------------------------------------------------------------
   # Application
-  # ---------------------------------------------------------------------------
   app:
-    image: ohmind_app:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: anji103/backend-api:latest
     container_name: ohmind_app
     ports:
       - "8000:8000"
     env_file:
       - .env
-    volumes:
-      - .:/app
     command: >
       uvicorn app.main:app
       --host 0.0.0.0
       --port 8000
-      --reload
     depends_on:
       postgres:
         condition: service_healthy
@@ -28,9 +21,7 @@ services:
     networks:
       - ohmind_net
 
-  # ---------------------------------------------------------------------------
   # PostgreSQL
-  # ---------------------------------------------------------------------------
   postgres:
     image: postgres:16-alpine
     container_name: ohmind_postgres
@@ -47,19 +38,14 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-      start_period: 10s
     restart: unless-stopped
     networks:
       - ohmind_net
 
-  # ---------------------------------------------------------------------------
   # Redis
-  # ---------------------------------------------------------------------------
   redis:
     image: redis:7-alpine
     container_name: ohmind_redis
-    ports:
-      - "6379:6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -67,21 +53,14 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
-      start_period: 5s
     restart: unless-stopped
     networks:
       - ohmind_net
 
-# ---------------------------------------------------------------------------
-# Volumes
-# ---------------------------------------------------------------------------
 volumes:
   postgres_data:
   redis_data:
 
-# ---------------------------------------------------------------------------
-# Networks
-# ---------------------------------------------------------------------------
 networks:
   ohmind_net:
     driver: bridge
