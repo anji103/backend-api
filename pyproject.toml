@@ -20,6 +20,9 @@ dependencies = [
     "fastapi-limiter==0.2.0",
     "cryptography>=49.0.0",
     "alembic-postgresql-enum>=1.10.0",
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic-settings",
 ]
 
 [dependency-groups]
