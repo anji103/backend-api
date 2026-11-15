@@ -43,6 +43,11 @@ class Settings(BaseSettings):
     RATE_LIMIT_GLOBAL_SECONDS: int = 60
     RATE_LIMIT_AUTH_TIMES: int = 10
     RATE_LIMIT_AUTH_SECONDS: int = 60
+        # ── SMTP ─────────────────────────────────────────────────────────────
+    SMTP_HOST: str = ""
+    SMTP_PORT: int = 465
+    SMTP_USERNAME: str = ""
+    SMTP_PASS: str = ""
 
 
 settings = Settings()
