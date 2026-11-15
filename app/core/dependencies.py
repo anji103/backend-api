@@ -1,6 +1,6 @@
-from fastapi_limiter.depends import RateLimiter
 from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from fastapi_limiter.depends import RateLimiter
 
 from app.core.security import decode_access_token
 
@@ -13,20 +13,18 @@ def get_current_user_id(
 ) -> str:
     """
     FastAPI dependency — extracts and validates the JWT Bearer token.
-
-    Returns the user UUID string (the ``sub`` claim).
-    Raises HTTP 401 on any token error.
+    Returns the user UUID string (the sub claim).
     """
     try:
         payload = decode_access_token(credentials.credentials)
         user_id: str | None = payload.get("sub")
+
         if not user_id:
             raise ValueError("Missing sub claim")
-        
-        # Inject into request state for other dependencies (like limiter)
+
         request.state.user_id = user_id
-        
         return user_id
+
     except Exception as exc:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
