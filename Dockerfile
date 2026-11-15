@@ -8,22 +8,15 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
     PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    PATH="/app/.venv/bin:$PATH"
 
-# Dependencies
-FROM base AS deps
-
+# Install dependencies
 COPY pyproject.toml uv.lock ./
 
 RUN uv sync --frozen --no-dev
 
-# Production
-FROM base AS production
-
-COPY --from=deps /app/.venv /app/.venv
-
-ENV PATH="/app/.venv/bin:$PATH"
-
+# Copy application code
 COPY . .
 
 EXPOSE 8000
