@@ -1,3 +1,4 @@
+
 services:
   app:
     build:
@@ -15,10 +16,9 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    networks:
+      - ohmind_net
 
-  # ---------------------------------------------------------------------------
-  # PostgreSQL
-  # ---------------------------------------------------------------------------
   postgres:
     image: postgres:16-alpine
     container_name: ohmind_postgres
@@ -40,9 +40,6 @@ services:
     networks:
       - ohmind_net
 
-  # ---------------------------------------------------------------------------
-  # Redis
-  # ---------------------------------------------------------------------------
   redis:
     image: redis:7-alpine
     container_name: ohmind_redis
@@ -60,12 +57,10 @@ services:
     networks:
       - ohmind_net
 
-# ─── Volumes ────────────────────────────────────────────────────────────────
 volumes:
   postgres_data:
   redis_data:
 
-# ─── Networks ───────────────────────────────────────────────────────────────
 networks:
   ohmind_net:
     driver: bridge
