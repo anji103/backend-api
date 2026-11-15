@@ -18,6 +18,8 @@ dependencies = [
     "httpx>=0.28.0",
     "python-multipart>=0.0.20",
     "fastapi-limiter==0.2.0",
+    "cryptography>=49.0.0",
+    "alembic-postgresql-enum>=1.10.0",
 ]
 
 [dependency-groups]
