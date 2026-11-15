@@ -1,3 +1,4 @@
+from fastapi_limiter.depends import RateLimiter
 from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
